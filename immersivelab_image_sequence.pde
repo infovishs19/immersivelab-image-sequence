@@ -1,15 +1,15 @@
-import oscP5.*;
-import netP5.*;
+//import oscP5.*;
+//import netP5.*;
 //import codeanticode.syphon.*;
-import spout.*;
+//import spout.*;
 
-OscP5 oscCom;
+//OscP5 oscCom;
 PGraphics canvas;
 
 // Configuration
-String sketchName = "immersivelab_stills";
-int oscReceivePort = 12000;
-int trackingMode = 0; // 0: touch points, 1: clusters
+//String sketchName = "immersivelab_stills";
+//int oscReceivePort = 12000;
+//int trackingMode = 0; // 0: touch points, 1: clusters
 
 // video mapping
 int canvasW = 7680;
@@ -96,27 +96,6 @@ void loadPath(int index) {
   println("done");
 }
 
-// OSC Communication
-void 
-  setupCommunication()
-{
-  oscCom = new OscP5(this, oscReceivePort);
-}
-
-void oscEvent(OscMessage oscMessage) 
-{ 
-  String oscAddress = oscMessage.addrPattern();
-
-  if ( oscAddress.equals("/tuio/2Dcur") )
-  {
-    trackingControl.update(oscMessage);
-
-    if (trackingControl.updated == true)
-    {
-      // updateContent(trackingControl.touchPoints);
-    }
-  }
-}
 
 // This function returns all the files in a directory as an array of Strings  
 String[] listFileNames(String dir) {
