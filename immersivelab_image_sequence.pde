@@ -2,10 +2,12 @@
 //import netP5.*;
 //import codeanticode.syphon.*;
 //import spout.*;
+import java.util.Collections;   
 
 //OscP5 oscCom;
 PGraphics canvas;
 
+Boolean loaded = false;
 // Configuration
 //String sketchName = "immersivelab_stills";
 //int oscReceivePort = 12000;
@@ -16,6 +18,8 @@ int canvasW = 7680;
 int canvasH = 1080;
 
 ArrayList<String> images = new ArrayList<String>();
+ArrayList<PImage> actualImages = new ArrayList<PImage>();
+
 int imageIndex = 0;
 PImage current = null;
 // Processing Standard Functions
@@ -27,7 +31,7 @@ void settings()
 
 void setup()
 {
-  frameRate(60);
+  frameRate(30);
 
   //load images
   String path = sketchPath();
@@ -47,31 +51,44 @@ void setup()
     println("adding  " + filePath);
     images.add(filePath);
   }
-  
-  loadPath(imageIndex);
+  Collections.sort(images);  
+  println("image paths");
+  println(images);
+  println("loading actual images");
+  thread("loadFiles");
+
+  //loadPath(imageIndex);
 
   canvas = createGraphics(canvasW, canvasH, P3D);
   //setupCommunication();
   //setupTracking();
   //setupVideoMapping();
-
-  noLoop();
 }
 
-void draw()
+synchronized void draw()
 { 
 
-  println("draw");
+  //println("draw");
+
+
   canvas.beginDraw();
   canvas.noStroke();
   canvas.background(255);
 
-  println("getting index " + imageIndex + ", images.length " + images.size());
+  //println("getting index " + imageIndex + ", images.length " + images.size());
 
-
-
-  canvas.image(current, 0, 0);
-
+  if (loaded) 
+  {
+    canvas.image(current, 0, 0);
+    imageIndex++;
+    if (imageIndex>actualImages.size()-1) {
+      imageIndex = 0;
+    }
+    current = actualImages.get(imageIndex);
+  } else
+  {
+    canvas.background(255, 0, 0);
+  }
 
   canvas.endDraw();
   // mappingControl.update(canvas);
@@ -106,5 +123,24 @@ String[] listFileNames(String dir) {
   } else {
     // If it's not a directory
     return null;
+  }
+}
+
+void loadFiles() {
+
+  println("loadFiles");
+  actualImages = new ArrayList<PImage>();
+  for (int i=0; i<images.size(); i++) {
+    String thePath = images.get(i);
+    println("loading " + thePath);
+    PImage img = loadImage(thePath);
+    actualImages.add(img);
+  }
+  current = actualImages.get(0);
+  println("loading images done");
+
+  synchronized (loaded) 
+  { 
+    loaded = true;
   }
 }
