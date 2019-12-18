@@ -7,13 +7,13 @@ void
 setupVideoMapping()
 {
   canvas = createGraphics(canvasW,canvasH,P3D);
-  //NEEDED// mappingControl = new MappingControl(this, sketchName);
+   mappingControl = new MappingControl(this, sketchName);
 }
 
 class MappingControl
 {
   //SyphonServer syphonServer;
-  //NEEDED// Spout spout;
+  Spout spout;
   
   final int controlPort = 8400;
   NetAddress controlAddress;
@@ -22,8 +22,8 @@ class MappingControl
   public MappingControl(PApplet pApplet, String pSketchName)
   {
     //syphonServer = new SyphonServer(pApplet, "Processing Syphon");
-    //NEEDED// spout = new Spout(pApplet);
-    //NEEDED// spout.createSender("Processing Spout");
+     spout = new Spout(pApplet);
+    spout.createSender("Processing Spout");
     
     controlAddress = new NetAddress("127.0.0.1", controlPort);
  
@@ -42,7 +42,7 @@ class MappingControl
   public void update(PGraphics pCanvas)
   {
       //syphonServer.sendImage(pCanvas);
-      //NEEDED// spout.sendTexture(pCanvas);
+      spout.sendTexture(pCanvas);
   }
   
 };

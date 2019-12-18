@@ -1,7 +1,7 @@
 import oscP5.*;
 import netP5.*;
 ////import codeanticode.syphon.*;
-//NEEDED// import spout.*;
+import spout.*;
 import java.util.Collections;  
 
 OscP5 oscCom;
@@ -25,7 +25,7 @@ PImage current = null;
 // Processing Standard Functions
 void settings() 
 {
-  size(1280,180,P3D);
+  size(1280, 180, P3D);
   PJOGL.profile=1;
 }
 
@@ -33,12 +33,12 @@ void setup()
 {
   frameRate(60);
 
-  //NEEDED// setupCommunication();
+  setupCommunication();
   ////setupTracking();
   setupVideoMapping();
   ////setupAudio();
   ////setupContent();
-  
+
   //===content
   //load images
   String path = sketchPath();
@@ -63,7 +63,6 @@ void setup()
   println(images);
   println("loading actual images");
   thread("loadFiles");
-
 }
 
 synchronized void draw()
@@ -71,10 +70,10 @@ synchronized void draw()
   canvas.beginDraw();
   canvas.noStroke();
   canvas.background(255);
-  
+
   ////udpateContent();
   ////drawContent();
-  
+
   if (loaded) 
   {
     canvas.image(current, 0, 0);
@@ -89,13 +88,13 @@ synchronized void draw()
   }
 
   canvas.endDraw();
-  //NEEDED// mappingControl.update(canvas);
-  image(canvas,0,0, width, height);
+  mappingControl.update(canvas);
+  image(canvas, 0, 0, width, height);
 }
 
 // OSC Communication
 void 
-setupCommunication()
+  setupCommunication()
 {
   oscCom = new OscP5(this, oscReceivePort);
 }
@@ -103,16 +102,16 @@ setupCommunication()
 void oscEvent(OscMessage oscMessage) 
 { 
   String oscAddress = oscMessage.addrPattern();
- 
-  if( oscAddress.equals("/tuio/2Dcur") )
+
+  if ( oscAddress.equals("/tuio/2Dcur") )
   {
-     trackingControl.update(oscMessage);
-     
-     if(trackingControl.updated == true)
-     {
-       updateContent(trackingControl.touchPoints);
-     }
-   }
+    trackingControl.update(oscMessage);
+
+    if (trackingControl.updated == true)
+    {
+      updateContent(trackingControl.touchPoints);
+    }
+  }
 }
 
 
@@ -121,7 +120,7 @@ void loadPath(int index) {
   println("loading "  + path);
   println("duh");
   current = loadImage(path);
-  
+
   println("done");
 }
 
