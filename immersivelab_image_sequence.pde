@@ -31,7 +31,7 @@ void settings()
 
 void setup()
 {
-  frameRate(60);
+  frameRate(10);
 
   setupCommunication();
   ////setupTracking();
@@ -47,7 +47,7 @@ void setup()
 
   println("Listing all filenames in a directory: ");
   String[] filenames = listFileNames(imagePath);
-  printArray(filenames);
+ // printArray(filenames);
 
   for (int i=0; i<filenames.length; i++) {
 
@@ -55,7 +55,7 @@ void setup()
       continue;
     }
     String filePath = imagePath + "/" + filenames[i];
-    println("adding  " + filePath);
+    //println("adding  " + filePath);
     images.add(filePath);
   }
   Collections.sort(images);  
@@ -82,9 +82,10 @@ synchronized void draw()
       imageIndex = 0;
     }
     current = actualImages.get(imageIndex);
+    
   } else
   {
-    canvas.background(255, 0, 0);
+    canvas.background(0,35,64);
   }
 
   canvas.endDraw();
